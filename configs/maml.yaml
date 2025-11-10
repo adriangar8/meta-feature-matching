@@ -1,0 +1,9 @@
+base_model: "superpoint"
+meta_lr_inner: 1e-3
+meta_lr_outer: 1e-4
+num_inner_steps: 3
+meta_batch_size: 4
+meta_epochs: 25
+tasks: ["illumination", "viewpoint", "blur"]
+pretrained_path: "results/checkpoints/superpoint_finetuned.pth"
+save_path: "results/checkpoints/maml_restored.pth"

@@ -1,0 +1,10 @@
+torch>=2.0.0
+torchvision
+numpy
+opencv-python
+matplotlib
+PyYAML
+tqdm
+wandb>=0.17.0
+higher # for MAML inner-loop autograd
+scikit-learn

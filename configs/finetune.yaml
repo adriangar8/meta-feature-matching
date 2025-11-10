@@ -1,0 +1,6 @@
+base_model: "superpoint"
+epochs: 30
+lr: 1e-4
+optimizer: "adam"
+train_domain: "illumination"
+save_path: "results/checkpoints/superpoint_finetuned.pth"

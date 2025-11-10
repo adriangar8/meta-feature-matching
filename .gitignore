@@ -7,3 +7,4 @@ results/
 data/
 wandb/
 .DS_Store
+venv/

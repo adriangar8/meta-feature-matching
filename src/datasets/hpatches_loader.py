@@ -16,7 +16,7 @@ import random
 import numpy as np
 from typing import Optional, Tuple, List, Dict
 
-HPATCHES_ROOT = os.environ.get("HPATCHES_ROOT", "/Data/adrian.garcia/hpatches")
+HPATCHES_ROOT = os.environ.get("HPATCHES_ROOT", "/Data/adrian.garcia/hpatches/hpatches")
 
 
 def warp_point(H: np.ndarray, x: float, y: float) -> Tuple[float, float]:

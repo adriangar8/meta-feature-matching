@@ -5,6 +5,8 @@ run_name: "full_benchmark"
 # Logging
 use_wandb: true
 
+hpatches_root: "/Data/adrian.garcia/hpatches/hpatches"
+
 # Which evaluations to run
 eval_traditional: true   # SIFT, ORB, BRISK, AKAZE
 eval_deep: true          # Deep learning descriptors

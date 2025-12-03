@@ -1,0 +1,53 @@
+# Configuration for Meaningful Experiments
+# Run with: python scripts/run_benchmark_fast.py --config configs/paper_experiments.yaml
+
+# Project settings
+project: "meta-feature-matching"
+run_name: "paper_results"
+use_wandb: true
+
+# What to evaluate
+eval_traditional: true
+eval_deep: true
+eval_continual: true
+eval_maml: true
+
+# Model settings
+deep_models:
+  - resnet50
+  - resnet18
+  - lightweight
+
+# Continual learning methods
+continual_methods:
+  - naive
+  - ewc
+  - lwf
+  - si
+
+# Training epochs (more for better convergence)
+deep_epochs: 10
+epochs_source: 10
+epochs_target: 10
+meta_epochs: 50  # MAML needs many epochs
+
+# Learning rates
+lr: 0.0001
+meta_lr_inner: 0.01   # Higher for faster adaptation
+meta_lr_outer: 0.0001
+
+# Continual learning hyperparameters
+ewc_lambda: 400       # Reduced from 1000 (was preventing new learning)
+lwf_lambda: 1.0
+si_lambda: 0.5
+
+# Data settings
+batch_size: 64
+max_samples: 10000    # More samples for better training
+max_pairs: 50         # More pairs for traditional matcher eval
+num_workers: 4
+
+# MAML settings
+maml_inner_steps: 5   # More adaptation steps
+maml_support_batches: 4
+maml_query_batches: 4

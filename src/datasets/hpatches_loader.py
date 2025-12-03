@@ -232,17 +232,34 @@ class HPatchesSequences(Dataset):
         return img1, img2, H, seq
 
 
+# In get_triplet_dataloader(), add max_samples parameter:
+
 def get_triplet_dataloader(
     domain: str,
     batch_size: int = 32,
     root: Optional[str] = None,
-    num_workers: int = 0,
+    num_workers: int = 4,  # CHANGED from 0
     hard_negatives: bool = True,
+    max_samples: Optional[int] = None,  # ADD THIS
 ) -> DataLoader:
     """Get DataLoader for triplet training."""
+    from torch.utils.data import Subset
+    
     ds = HPatchesTriplets(root=root, domain=domain, hard_negatives=hard_negatives)
-    return DataLoader(ds, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-
+    
+    # Limit samples if specified
+    if max_samples and len(ds) > max_samples:
+        indices = np.random.choice(len(ds), max_samples, replace=False)
+        ds = Subset(ds, indices)
+    
+    return DataLoader(
+        ds,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=True,  
+        drop_last=True,
+    )
 
 def get_sequence_dataloader(
     domain: str,

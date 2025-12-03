@@ -21,6 +21,7 @@ Metrics:
 import argparse
 import yaml
 import torch
+from torch.cuda.amp import autocast, GradScaler
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
@@ -125,6 +126,8 @@ def train_and_evaluate_deep_model(
     criterion = torch.nn.TripletMarginLoss(margin=1.0)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
+    scaler = GradScaler()
+
     # Training
     for epoch in range(epochs):
         model.train()
@@ -132,14 +135,17 @@ def train_and_evaluate_deep_model(
 
         for a, p, n in tqdm(train_loader, desc=f"Epoch {epoch+1}/{epochs}", leave=False):
             a, p, n = a.to(device), p.to(device), n.to(device)
-
-            da, dp, dn = model(a), model(p), model(n)
-            loss = criterion(da, dp, dn)
-
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
+            
+            optimizer.zero_grad(set_to_none=True)  # Faster
+            
+            with autocast():  # ADD: Mixed precision
+                da, dp, dn = model(a), model(p), model(n)
+                loss = criterion(da, dp, dn)
+            
+            scaler.scale(loss).backward()  # ADD
+            scaler.step(optimizer)         # ADD
+            scaler.update()                # ADD
+            
             total_loss += loss.item()
 
         avg_loss = total_loss / len(train_loader)
@@ -158,7 +164,6 @@ def train_and_evaluate_deep_model(
         print(f"  {domain} accuracy: {metrics.accuracy:.4f}")
 
     return results, model
-
 
 def evaluate_continual_learning(
     source_domain: str,
@@ -511,7 +516,6 @@ def main():
         with open(args.config) as f:
             config.update(yaml.safe_load(f))
 
-    # Quick mode
     if args.quick:
         config.update({
             "deep_epochs": 2,
@@ -520,6 +524,9 @@ def main():
             "meta_epochs": 2,
             "deep_models": ["resnet50"],
             "continual_methods": ["naive", "ewc"],
+            "batch_size": 64,       # ADD: Larger batch
+            "max_samples": 3000,    # ADD: Limit samples
+            "num_workers": 4,       # ADD: Parallel loading
         })
 
     run_full_benchmark(config)

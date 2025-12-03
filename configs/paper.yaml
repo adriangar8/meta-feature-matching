@@ -1,0 +1,51 @@
+# Configuration for Paper-Quality Results
+# Expected runtime: 2-4 hours on RTX 4000
+# Run: python scripts/run_benchmark_v2.py --config configs/paper_config.yaml
+
+project: "meta-feature-matching"
+run_name: "paper_final"
+use_wandb: true
+
+# Evaluations to run
+eval_traditional: true
+eval_deep: true
+eval_continual: true
+eval_maml: true
+
+# Models to evaluate
+deep_models:
+  - resnet50
+  - resnet18
+  - lightweight
+
+# Continual learning methods
+continual_methods:
+  - naive
+  - ewc
+  - lwf
+  - si
+
+# Training settings - MORE EPOCHS for proper convergence
+deep_epochs: 15          # Was 2
+epochs_source: 15        # Was 2
+epochs_target: 10        # Was 2
+meta_epochs: 50          # Was 5 - MAML needs many epochs
+
+# Learning rates
+lr: 1e-4
+
+# MAML settings - LOWER inner LR to prevent overshooting
+meta_lr_inner: 0.001     # Was 0.01 - too high caused accuracy to drop
+meta_lr_outer: 1e-4
+maml_inner_steps: 3      # Fewer steps with lower LR
+
+# Continual learning hyperparameters
+ewc_lambda: 1000         # Higher to see more effect
+lwf_lambda: 2.0          # Higher distillation weight
+si_lambda: 1.0
+
+# Data settings - MORE DATA for better training
+batch_size: 64
+max_samples: 15000       # Was 3000 - need more for proper training
+max_pairs: 50            # For traditional matcher evaluation
+num_workers: 4

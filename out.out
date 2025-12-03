@@ -1,0 +1,52 @@
+
+============================================================
+META-FEATURE-MATCHING BENCHMARK
+============================================================
+Device: cuda
+GPU: NVIDIA RTX 4000 Ada Generation
+Memory: 21.0 GB
+Data workers: 4
+
+============================================================
+EVALUATING TRADITIONAL MATCHERS
+============================================================
+
+--- SIFT_BF ---
+  illumination: MMA@3px=0.7123, MMA@5px=0.7850
+  viewpoint: MMA@3px=0.8002, MMA@5px=0.8439
+
+--- SIFT_FLANN ---
+  illumination: MMA@3px=0.6967, MMA@5px=0.7671
+  viewpoint: MMA@3px=0.7855, MMA@5px=0.8277
+
+--- ORB_BF ---
+  illumination: MMA@3px=0.6934, MMA@5px=0.7763
+  viewpoint: MMA@3px=0.7565, MMA@5px=0.8212
+
+--- ORB_FLANN ---
+  illumination: MMA@3px=0.6286, MMA@5px=0.7107
+  viewpoint: MMA@3px=0.7218, MMA@5px=0.7839
+
+--- BRISK_BF ---
+  illumination: MMA@3px=0.7557, MMA@5px=0.8293
+  viewpoint: MMA@3px=0.8263, MMA@5px=0.8917
+
+--- AKAZE_BF ---
+  illumination: MMA@3px=0.7351, MMA@5px=0.8303
+  viewpoint: MMA@3px=0.7826, MMA@5px=0.8509
+
+--- Training resnet50 on illumination ---
+  Epoch 1: loss=0.8349
+  Epoch 2: loss=0.5521
+  Epoch 3: loss=0.4274
+  Epoch 4: loss=0.3557
+  Epoch 5: loss=0.3153
+  Epoch 6: loss=0.2763
+  Epoch 7: loss=0.2574
+  Epoch 8: loss=0.2325
+  Epoch 9: loss=0.2150
+  Epoch 10: loss=0.2012
+  illumination accuracy: 0.9209
+  viewpoint accuracy: 0.8103
+
+--- Training resnet50 on viewpoint ---

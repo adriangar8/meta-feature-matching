@@ -320,8 +320,6 @@ The benchmark uses [Weights & Biases](https://wandb.ai) for experiment tracking:
 ```bash
 # Login to wandb (first time only)
 wandb login
-
-# Experiments are logged to project: meta-feature-matching-final
 ```
 
 To disable wandb:

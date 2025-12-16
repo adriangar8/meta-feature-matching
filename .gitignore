@@ -4,7 +4,7 @@ __pycache__/
 *.pth
 *.pt
 results/
-data/
+hpatches/
 wandb/
 .DS_Store
 venv/

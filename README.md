@@ -329,6 +329,10 @@ export WANDB_MODE=disabled
 python scripts/run_benchmark.py --quick
 ```
 
+### Demo Video
+
+You can view the demo video by clicking [here](assets/p09_demo_video.mp4).
+
 ## License
 
 This project is part of academic research at École Polytechnique.
